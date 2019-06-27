@@ -1,10 +1,15 @@
 const gulp = require("gulp");
 const sass = require('gulp-sass');
 const autoprefixer = require('gulp-autoprefixer');
+const browserSync = require('browser-sync').create();
 
-gulp.task("default", function(){
-  console.log("42");
-})
+gulp.task("default", ["styles"], function() {
+  gulp.watch("sass/**/*.scss", ["styles"]);
+
+  browserSync.init({
+    server: "./"
+  });
+});
 
 gulp.task("styles", function(){
   gulp.src('sass/**/*.scss')
@@ -15,4 +20,5 @@ gulp.task("styles", function(){
       })
     )
   .pipe(gulp.dest('./css'))
+  .pipe(browserSync.stream());
 })
