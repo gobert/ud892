@@ -3,6 +3,7 @@ const sass = require('gulp-sass');
 const autoprefixer = require('gulp-autoprefixer');
 const browserSync = require('browser-sync').create();
 const eslint = require('gulp-eslint');
+const jasmineBrowser = require('gulp-jasmine-browser');
 
 gulp.task("default", ["styles"], function() {
   gulp.watch("sass/**/*.scss", ["styles"]);
@@ -39,4 +40,11 @@ gulp.task('lint', function() {
         // lint error, return the stream and pipe to failOnError last.
         .pipe(eslint.failOnError())
     );
+});
+
+gulp.task('tests', function() {
+    return gulp
+        .src('tests/spec/extraSpec.js')
+        .pipe(jasmineBrowser.specRunner({ console: true }))
+        .pipe(jasmineBrowser.headless({ driver: 'chrome' }));
 });
